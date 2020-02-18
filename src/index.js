@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import { Client } from 'pg';
 import dotenv from 'dotenv';
-import { messageRouter } from './routes';
+import { messageRouter, userRouter } from './routes';
+import { pgClient } from './config';
 
 dotenv.config()
 
@@ -11,19 +11,12 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use('/message', messageRouter);
+app.use('/user', userRouter);
 app.listen(8000, () => {
 	console.log('connected')
 });
 
-const client = new Client({
-	user: 'postgres',
-	host: '0.0.0.0',
-	database: 'postgres',
-	password: '123456',
-	port: 5432
-});
-
-client.connect()
+pgClient.connect()
 	.then(() => {
 		console.log("PostgreSQL: connnection OK !");
 	})

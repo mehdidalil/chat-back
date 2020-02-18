@@ -7,11 +7,19 @@ const userSchema = {
 	username: {
 		type: "string",
 		required: "true",
+		length: {
+			min: 3,
+			max: 32
+		},
 		match: REGEX_USERNAME
 	},
 	password: {
 		type: "string",
 		required: "true",
+		length: {
+			min: 8,
+			max: 32
+		},
 		match: REGEX_PASSWORD
 	},
 	mail: {

@@ -1,34 +1,32 @@
 import express from 'express';
-import { futaba } from 'little-validator';
-import { userSchema } from '../schemes';
-import { pgClient } from '../config';
+import { isAuth } from '../middleware';
+import { UserEntity } from '../entities';
 
 const userRouter = express.Router();
 
-userRouter.get('/', (req, res) => {
-	pgClient
-	.query()
+userRouter.get('/secret', isAuth, (req, res) => {
+	res.status(200).send("OOOOOKKKKK");
+});
+
+userRouter.post('/login', (req, res) => {
+	UserEntity
+	.login(req.body)
+	.then(response => res.status(200).send(response))
+	.catch(error => res.status(400).send(error));
+});
+
+userRouter.get('/:id', (req, res) => {
+	UserEntity
+	.getById(req.params.id)
+	.then(response => res.status(200).send(response))
+	.catch(error => res.status(400).send(error));
 });
 
 userRouter.post('/create', (req, res) => {
-	try {
-		futaba(userSchema, req.body);
-		const { username, password, mail } = req.body;
-
-		pgClient
-		.query(`INSERT INTO "user" ("username", "password", "mail") VALUES ('${username}', '${password}', '${mail}') RETURNING "id";`)
-		.then(response => {
-			const id = response.rows[0];
-			console.log(id);
-			res.status(200).send("User created !");
-		})
-		.catch(e => {
-			res.status(400).send(`User not created: ${e.detail}`);
-		});
-	}
-	catch (e) {
-		res.status(400).send(`Error: ${e.message}`);
-	}
+	UserEntity
+	.add(req.body)
+	.then(response => res.status(200).send(response))
+	.catch(e => res.status(400).send(`User not created: ${e}`));
 });
 
 export default userRouter;

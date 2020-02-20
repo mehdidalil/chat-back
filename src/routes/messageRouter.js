@@ -1,6 +1,7 @@
 import express from 'express';
 import { Message } from '../models';
 import { getDateNow } from '../helper';
+import { io } from '../config';
 
 const messageRouter = express.Router();
 
@@ -15,7 +16,9 @@ messageRouter.post('/create', (req, res) => {
 	const message = new Message(req.body);
 	message
 	.save()
-	.then(() => res.status(200).send("Message created"))
+	.then(() => {
+		res.status(200).send("Message created");
+	})
 	.catch(e => res.status(400).send(`Cannot add message: ${e.message}`));
 });
 

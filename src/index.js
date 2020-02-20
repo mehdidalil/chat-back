@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { pgClient, app } from './config';
 
 app.listen(8000, () => {
-	console.log('connected')
+	console.log('node listening on 8000')
 });
 
 pgClient.connect()

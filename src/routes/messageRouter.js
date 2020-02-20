@@ -12,7 +12,7 @@ messageRouter.get('/', (req, res) => {
 	.catch(e => console.log(e));
 });
 
-messageRouter.post('/create', (req, res) => {
+/*messageRouter.post('/create', (req, res) => {
 	const message = new Message(req.body);
 	message
 	.save()
@@ -20,6 +20,6 @@ messageRouter.post('/create', (req, res) => {
 		res.status(200).send("Message created");
 	})
 	.catch(e => res.status(400).send(`Cannot add message: ${e.message}`));
-});
+});*/
 
 export default messageRouter;

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { pgClient, app } from './config';
+import { Message } from './models';
 
 app.listen(8000, () => {
 	console.log('node listening on 8000')

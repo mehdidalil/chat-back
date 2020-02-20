@@ -1,17 +1,21 @@
 import mongoose from 'mongoose'
 
 const messageSchema = mongoose.Schema({
-	userId: {
+	content: {
+		type: String,
+		required: true
+	},
+	username: {
+		type: String,
+		required: true,
+	},
+	avatarId: {
 		type: Number,
 		required: true,
 	},
 	date: {
 		type: Date,
 		default: () => new Date()
-	},
-	content: {
-		type: String,
-		required: true
 	},
 });
 

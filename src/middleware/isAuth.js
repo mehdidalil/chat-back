@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const reject = (res) => {
-	res.status(500).send("You need to login to access this page !");
+	res.status(405).send("You need to login to access this page !");
 	throw new Error("You need to login to access this page !");
 }
 

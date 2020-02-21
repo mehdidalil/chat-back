@@ -1,12 +1,14 @@
 import express from 'express';
+import jwt from "jsonwebtoken";
 import { isAuth } from '../middleware';
 import { UserEntity } from '../entities';
 import { parseError } from '../helper';
+import { checkToken } from '../middleware';
 
 const userRouter = express.Router();
 
-userRouter.get('/secret', isAuth, (req, res) => {
-	res.status(200).send("OOOOOKKKKK");
+userRouter.post('/token', isAuth, (req, res) => {
+	res.status(200).send("OK");
 });
 
 userRouter.post('/login', (req, res) => {
@@ -39,14 +41,21 @@ userRouter.post('/create', (req, res) => {
 });
 
 userRouter.post('/modifyAvatar', isAuth, (req, res) => {
-	UserEntity
-	.modifyAvatar(req.body.userId, req.body.avatarId)
-	.then(response => res.status(200).send(response))
-	.catch(e => {
-		let error = parseError(e.message || e);
-		res.statusMessage = `Avatar not updated: ${e}`;
-		res.status(400).send(error);
+	const token = req.headers.authorization.split(" ")[1];
+	checkToken(token)
+	.then(tok => {
+		UserEntity
+		.modifyAvatar(tok.id, req.body.avatarId)
+		.then(response => res.status(200).send(response))
+		.catch(e => {
+			let error = parseError(e.message || e);
+			res.statusMessage = `Avatar not updated: ${e}`;
+			res.status(400).send(error);
+		});
 	})
+	.catch(err => {
+		res.status(400).send(err)
+	});
 })
 
 export default userRouter;

@@ -14,7 +14,7 @@ class UserEntity {
 				futaba(this.scheme, user);
 			}
 			catch (e) {
-				rej(e);
+				return rej(e);
 			}
 			const { username, password, mail } = user;
 		
@@ -45,7 +45,7 @@ class UserEntity {
 			.query(`SELECT id, username, mail, "avatarId" FROM "user" WHERE "mail" = '${mail}' AND "password" = '${password}';`)
 			.then(response => {
 				if (response.rowCount == 0)
-					rej("Wrong username or password.");
+					rej("Wrong mail or password.");
 				else
 				{
 					const { id, username, mail, avatarId} = response.rows[0];
@@ -55,7 +55,7 @@ class UserEntity {
 							username,
 							mail,
 							avatarId,
-							expiresAt: Date.now() + 30 * 1000
+							expiresAt: Date.now() + 60 * 1000
 						},
 						"secretpass",
 						{ algorithm: 'HS256'}
@@ -68,11 +68,10 @@ class UserEntity {
 	}
 
 	modifyAvatar(userId, avatarId) {
-		console.log(`${userId} ${avatarId}`)
 		return new Promise((res, rej) => {
 			pgClient
 			.query(`UPDATE "user" SET "avatarId" = '${avatarId}' WHERE "id" = '${userId}';`)
-			.then(response => res(response.rows[0]))
+			.then(response => res(avatarId))
 			.catch(rej);
 			});
 	}

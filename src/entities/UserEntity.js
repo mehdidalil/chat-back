@@ -55,7 +55,7 @@ class UserEntity {
 							username,
 							mail,
 							avatarId,
-							expiresAt: Date.now() + 60 * 1000
+							expiresAt: Date.now() + 10000 * 1000
 						},
 						"secretpass",
 						{ algorithm: 'HS256'}

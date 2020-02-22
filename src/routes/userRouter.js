@@ -36,6 +36,7 @@ userRouter.post('/create', (req, res) => {
 	.catch(e => {
 		let error = parseError(e.message || e);
 		res.statusMessage = `User not created: ${e}`;
+		console.log(e);
 		res.status(400).send(error);
 	});
 });

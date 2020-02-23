@@ -44,6 +44,7 @@ class UserEntity {
 			pgClient
 			.query(`SELECT id, username, mail, "avatarId" FROM "user" WHERE "mail" = '${mail}' AND "password" = '${password}';`)
 			.then(response => {
+				
 				if (response.rowCount == 0)
 					rej("Wrong mail or password.");
 				else

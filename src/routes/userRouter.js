@@ -12,6 +12,7 @@ userRouter.post('/token', isAuth, (req, res) => {
 });
 
 userRouter.post('/login', (req, res) => {
+	console.log(req.body);
 	UserEntity
 	.login(req.body)
 	.then(response => res.status(200).send(response))

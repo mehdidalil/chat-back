@@ -15,7 +15,7 @@ io.on("connection", (socket) => {
 	socket.on("disconnect", (data) => {
 		socket.disconnect(true);
 		console.log("User disconnected");
-	})
+	});
 });
 
 export default io;

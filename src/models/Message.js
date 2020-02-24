@@ -5,12 +5,8 @@ const messageSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	username: {
+	userId: {
 		type: String,
-		required: true,
-	},
-	avatarId: {
-		type: Number,
 		required: true,
 	},
 	date: {

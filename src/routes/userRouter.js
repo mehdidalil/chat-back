@@ -11,22 +11,39 @@ userRouter.post('/token', isAuth, (req, res) => {
 });
 
 userRouter.post('/login', (req, res) => {
-	console.log(req.body);
 	UserEntity
 	.login(req.body)
 	.then(response => res.status(200).send(response))
 	.catch(e => {
 		let error = parseError(e.message || e);
 		res.statusMessage = `Can't login: ${e}`;
-		res.status(400).send(error);
+		console.log(error);
+		res.status(400).send(e);
 	});
+});
+
+userRouter.get('/all', (req, res) => {
+	UserEntity
+	.getAllUsers()
+	.then(response => res.status(200).send(response))
+	.catch(e => {
+		let error = parseError(e.message || e);
+		res.statusMessage = `Can't get all users: ${e}`;
+		console.log(error);
+		res.status(400).send(e);
+	})
 });
 
 userRouter.get('/:id', (req, res) => {
 	UserEntity
 	.getById(req.params.id)
 	.then(response => res.status(200).send(response))
-	.catch(e => res.status(400).send(error));
+	.catch(e => {
+		let error = parseError(e.message || e);
+		res.statusMessage = `Can't get user by id: ${e}`;
+		console.log(error);
+		res.status(400).send(e);
+	});
 });
 
 userRouter.post('/create', (req, res) => {
@@ -36,7 +53,7 @@ userRouter.post('/create', (req, res) => {
 	.catch(e => {
 		let error = parseError(e.message || e);
 		res.statusMessage = `User not created: ${e}`;
-		console.log(e);
+		console.log(error);
 		res.status(400).send(error);
 	});
 });
@@ -51,11 +68,12 @@ userRouter.post('/modifyAvatar', isAuth, (req, res) => {
 		.catch(e => {
 			let error = parseError(e.message || e);
 			res.statusMessage = `Avatar not updated: ${e}`;
+			console.log(error);
 			res.status(400).send(error);
 		});
 	})
 	.catch(err => {
-		res.status(400).send(err)
+		res.status(400).send(err);
 	});
 })
 

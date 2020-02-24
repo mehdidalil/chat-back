@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 class UserEntity {
 	constructor() {
 		this.scheme = userSchema;
-	}
+	};
 
 	add(user) {
 		return new Promise((res, rej) => {
@@ -23,7 +23,7 @@ class UserEntity {
 			.then(response => res(response.rows[0]))
 			.catch(e => rej(e.detail));
 		});
-	}
+	};
 
 	getById(id) {
 		return new Promise((res, rej) => {
@@ -35,7 +35,7 @@ class UserEntity {
 			})
 			.catch(rej);
 		});
-	}
+	};
 
 	login(user) {
 		return new Promise((res, rej) => {
@@ -65,7 +65,7 @@ class UserEntity {
 			})
 			.catch(rej);
 		});
-	}
+	};
 
 	modifyAvatar(userId, avatarId) {
 		return new Promise((res, rej) => {
@@ -73,8 +73,17 @@ class UserEntity {
 			.query(`UPDATE "user" SET "avatarId" = '${avatarId}' WHERE "id" = '${userId}';`)
 			.then(response => res(avatarId))
 			.catch(rej);
-			});
-	}
-}
+		});
+	};
+
+	getAllUsers() {
+		return new Promise((res, rej) => {
+			pgClient
+			.query(`SELECT "username", "avatarId", "id" FROM "user";`)
+			.then(response => res(response.rows))
+			.catch(rej);
+		});
+	};
+};
 
 export default new UserEntity();

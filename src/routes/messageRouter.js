@@ -21,8 +21,6 @@ messageRouter.post('/create', isAuth, (req, res) => {
 		const message = new Message({
 			content,
 			userId: tok.id,
-			avatarId: tok.avatarId,
-			username: tok.username,
 		});
 		message
 		.save()

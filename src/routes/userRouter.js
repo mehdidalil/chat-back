@@ -48,8 +48,8 @@ userRouter.post('/modifyAvatar', isAuth, (req, res) => {
 	checkToken(token)
 	.then(tok => {
 		UserEntity
-		.modifyAvatar(tok.id, req.body.avatarId)
-		.then(response => res.status(200).send(response))
+		.modifyAvatar(tok.id, parseInt(req.body.avatarId))
+		.then(response => res.status(200).send({ avatarId: response }))
 		.catch(e => {
 			let error = parseError(e.message || e);
 			res.statusMessage = `Avatar not updated: ${e}`;

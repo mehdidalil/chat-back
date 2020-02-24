@@ -198,6 +198,18 @@ describe("User", function () {
 				});
 			});
 		});
+		describe("/POST /user/login", function () {
+			it("/POST /user/login", function (done) {
+				chai.request(app)
+				.post(`/user/login`)
+				.send(user.valid)
+				.end((err, res) => {
+					res.should.have.status(200);
+					token = res.text;
+					done();
+				});
+			});
+		});
 		describe("/POST /user/modifyAvatar", function () {
 			it("/POST should change user avatar", function (done) {
 				chai.request(app)
@@ -205,10 +217,17 @@ describe("User", function () {
 				.set('Authorization', `Bearer ${token}`)
 				.send({ avatarId: 5 })
 				.end((err, res) => {
-					console.log(res.body);
 					res.should.have.status(200);
+					res.body.should.have.property("avatarId");
+					res.body.avatarId.should.be.equal(5);
 					done();
 				});
+			});
+		});
+		describe("/DELETE /user", function () {
+			it("/DELETE should delete user", function (done) {
+				chai.request(app)
+				.delete()
 			});
 		});
 	});

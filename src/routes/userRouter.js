@@ -1,5 +1,4 @@
 import express from 'express';
-import jwt from "jsonwebtoken";
 import { isAuth } from '../middleware';
 import { UserEntity } from '../entities';
 import { parseError } from '../helper';

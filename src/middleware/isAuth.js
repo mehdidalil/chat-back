@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import checkToken from "./checkToken";
 
 const reject = (res) => {
@@ -6,8 +5,9 @@ const reject = (res) => {
 }
 
 const isAuth = (req, res, next) => {
-	if (typeof req.headers.authorization !== undefined) {
+	if (req.headers.authorization !== undefined) {
 		const token = req.headers.authorization.split(" ")[1];
+		
 		checkToken(token)
 		.then(tok => {
 			next();

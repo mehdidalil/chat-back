@@ -1,10 +1,14 @@
 import mongoose from 'mongoose';
-import { pgClient, app } from './config';
-import { Message } from './models';
+import { pgClient, app, server } from './config';
+
+server.listen(8080, () => {
+	console.log('socket listening on 8080');
+});
 
 app.listen(8000, () => {
 	console.log('node listening on 8000')
 });
+
 
 pgClient.connect()
 	.then(() => {

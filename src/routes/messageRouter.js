@@ -12,7 +12,7 @@ messageRouter.get('/', (req, res) => {
 	.catch(e => console.log(e));
 });
 
-messageRouter.post('/create', isAuth, (req, res) => {
+messageRouter.post('/', isAuth, (req, res) => {
 	const { content } = req.body;
 	const token = req.headers.authorization.split(" ")[1];
 
@@ -25,7 +25,7 @@ messageRouter.post('/create', isAuth, (req, res) => {
 		message
 		.save()
 		.then(response => {
-			res.status(200).send("Message created");
+			res.status(200).json(response);
 			io.sockets.emit("newMessage", response);
 		})
 		.catch(e => {

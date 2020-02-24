@@ -20,19 +20,18 @@ class UserEntity {
 		
 			pgClient
 			.query(`INSERT INTO "user" ("username", "password", "mail", "avatarId") VALUES ('${username}', '${password}', '${mail}', '0') RETURNING "id";`)
-			.then(response => res(response.rows[0]))
-			.catch(e => rej(e.detail));
+			.then(response => {
+				res(response.rows[0]);
+			})
+			.catch(e => rej(new Error(e.detail)));
 		});
 	};
 
 	getById(id) {
 		return new Promise((res, rej) => {
 			pgClient
-			.query(`SELECT id, username, mail, avatarId FROM "user" WHERE id = '${id}';`)
-			.then(response => {
-				const user = response.rowCount != 0 ? response.rows[0] : {};
-				res(user);
-			})
+			.query(`SELECT "id", "username", "mail", "avatarId" FROM "user" WHERE id = '${id}';`)
+			.then(response => response.rowCount != 0 ? res(response.rows[0]) : rej(new Error("No users")))
 			.catch(rej);
 		});
 	};
@@ -45,7 +44,7 @@ class UserEntity {
 			.query(`SELECT id, username, mail, "avatarId" FROM "user" WHERE "mail" = '${mail}' AND "password" = '${password}';`)
 			.then(response => {
 				if (response.rowCount == 0)
-					rej("Wrong mail or password.");
+					rej(new Error("Wrong mail or password."));
 				else
 				{
 					const { id, username, mail, avatarId} = response.rows[0];
@@ -81,6 +80,15 @@ class UserEntity {
 			pgClient
 			.query(`SELECT "username", "avatarId", "id" FROM "user";`)
 			.then(response => res(response.rows))
+			.catch(rej);
+		});
+	};
+
+	deleteUser(id) {
+		return new Promise((res, rej) => {
+			pgClient
+			.query(`DELETE FROM "user" WHERE "id" = '${id}';`)
+			.then(({ rowCount }) => res(rowCount ? true : false))
 			.catch(rej);
 		});
 	};
